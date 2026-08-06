@@ -1,0 +1,74 @@
+.cb__handoff {
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.cb__who {
+  font-size: 40px;
+}
+
+.cb__choose,
+.cb__reveal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 20px;
+}
+
+.cb__q {
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.cb__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cb__option {
+  min-height: 96px;
+  border-radius: var(--r-md);
+  background: var(--board);
+  border: 1px solid var(--line);
+  font-size: 20px;
+  font-weight: 700;
+  padding: 0 18px;
+}
+.cb__option:active {
+  background: var(--board-2);
+  border-color: var(--amber);
+}
+
+.cb__pair {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cb__slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--r-sm);
+  background: var(--board);
+  border: 1px solid var(--line);
+}
+.cb__slot b {
+  font-size: 18px;
+  color: var(--amber);
+  text-align: right;
+}
+
+.cb__verdict {
+  text-align: center;
+  font-size: 30px;
+  color: var(--alert);
+}
+.cb__verdict.is-hit {
+  color: var(--amber);
+}

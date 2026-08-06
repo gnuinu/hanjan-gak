@@ -1,0 +1,39 @@
+.picker__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--amber);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  max-height: 42vh;
+  overflow-y: auto;
+}
+
+.picker__btn {
+  min-height: var(--tap);
+  border-radius: var(--r-sm);
+  background: var(--board);
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  padding: 0 8px;
+}
+.picker__btn:active {
+  background: var(--board-2);
+}
+.picker__emoji {
+  font-size: 20px;
+}
+.picker__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

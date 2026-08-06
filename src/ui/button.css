@@ -1,0 +1,45 @@
+.btn {
+  min-height: var(--tap);
+  width: 100%;
+  border-radius: var(--r-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 20px;
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.btn--lg {
+  min-height: 68px;
+  font-size: 20px;
+}
+
+.btn--primary {
+  background: var(--amber);
+  color: #21160a;
+}
+.btn--danger {
+  background: var(--alert);
+  color: #fff;
+}
+.btn--ghost {
+  background: var(--board);
+  border: 1px solid var(--line);
+  color: var(--paper);
+}
+.btn--quiet {
+  background: transparent;
+  color: var(--muted);
+  min-height: 44px;
+  font-weight: 500;
+}

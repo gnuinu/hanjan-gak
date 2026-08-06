@@ -1,0 +1,91 @@
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 8px 0 4px;
+}
+.counter__btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--board);
+  border: 1px solid var(--line);
+  font-size: 30px;
+  color: var(--paper);
+  line-height: 1;
+}
+.counter__btn:active:not(:disabled) {
+  background: var(--board-2);
+}
+.counter__btn:disabled {
+  opacity: 0.3;
+}
+.counter__value {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--amber);
+  min-width: 84px;
+  text-align: center;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  padding-bottom: 4px;
+}
+.players__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-left-width: 4px;
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  min-height: 56px;
+}
+.players__emoji {
+  width: 44px;
+  height: 44px;
+  font-size: 24px;
+  border-radius: 10px;
+  background: var(--board-2);
+}
+.players__name {
+  flex: 1;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.players__pencil {
+  color: var(--muted);
+  font-size: 13px;
+}
+.players__input {
+  flex: 1;
+  min-height: 44px;
+  background: var(--ink);
+  border: 1px solid var(--amber);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 17px;
+  font-weight: 600;
+  outline: none;
+  min-width: 0;
+}
+
+.seg--wide {
+  width: 100%;
+}
+.seg--wide button {
+  flex: 1;
+  min-height: 46px;
+  font-size: 15px;
+}

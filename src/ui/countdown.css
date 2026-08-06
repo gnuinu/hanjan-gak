@@ -1,0 +1,29 @@
+.countdown {
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.countdown__title {
+  font-size: 34px;
+  color: var(--paper);
+}
+
+.countdown__num {
+  font-size: 120px;
+  color: var(--amber);
+  line-height: 1;
+  margin-top: 12px;
+  animation: pop 0.35s ease-out;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(1.6);
+    opacity: 0.2;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

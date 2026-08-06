@@ -1,0 +1,14 @@
+.bail {
+  position: fixed;
+  top: calc(var(--safe-t) + 8px);
+  right: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: rgba(11, 16, 32, 0.55);
+  font-size: 16px;
+  z-index: 50;
+}

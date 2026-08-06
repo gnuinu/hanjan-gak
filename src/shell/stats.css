@@ -1,0 +1,42 @@
+.stats__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.stats__big {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--amber);
+}
+
+.stats__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stats__name {
+  width: 96px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stats__bar {
+  flex: 1;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--board);
+  overflow: hidden;
+}
+.stats__bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.stats__count {
+  width: 24px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 14px;
+}

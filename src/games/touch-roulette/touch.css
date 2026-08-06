@@ -1,0 +1,107 @@
+.touch {
+  touch-action: none;
+  overflow: hidden;
+}
+
+.touch__guide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 24px;
+}
+.touch__guide-big {
+  font-size: 30px;
+  color: var(--paper);
+}
+
+.touch__dot {
+  position: fixed;
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  background: rgba(20, 25, 46, 0.85);
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.touch__dot-emoji {
+  font-size: 26px;
+}
+.touch__dot-name {
+  font-size: 12px;
+  color: var(--muted);
+}
+.touch__dot.is-hit {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 6px rgba(255, 176, 32, 0.22), 0 0 40px rgba(255, 176, 32, 0.45);
+}
+.touch__dot.is-dim {
+  opacity: 0.25;
+}
+
+.touch__gauge {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 16px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--board);
+  overflow: hidden;
+}
+.touch__gauge-fill {
+  height: 100%;
+  background: var(--amber);
+}
+
+.touch__teams {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 24px;
+  align-content: center;
+  background: rgba(11, 16, 32, 0.9);
+}
+.touch__team {
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.touch__team-h {
+  font-size: 22px;
+  color: var(--amber);
+}
+
+.seg {
+  display: flex;
+  background: var(--board);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+}
+.seg button.is-on {
+  background: var(--board-2);
+  color: var(--paper);
+  font-weight: 700;
+}

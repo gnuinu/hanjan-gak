@@ -1,0 +1,38 @@
+/* 컨셉: 심야 경마장 전광판 */
+:root {
+  --ink: #0b1020; /* 배경 (자정 남색) */
+  --board: #14192e; /* 카드/패널 */
+  --board-2: #1c2340; /* 한 단계 밝은 패널 */
+  --amber: #ffb020; /* 전광판 앰버 — 주요 강조, 당첨자 */
+  --turf: #2e9e6b; /* 경마 트랙, 진행/성공 */
+  --alert: #e4483c; /* 폭탄, 탈락, 부정 출발 */
+  --paper: #f2efe6; /* 텍스트 */
+  --muted: #8d93ac; /* 보조 텍스트 */
+  --line: #262d4a; /* 경계선 */
+
+  --font-display: 'Black Han Sans', 'Pretendard Variable', system-ui, sans-serif;
+  --font-body: 'Pretendard Variable', Pretendard, system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+
+  --tap: 56px; /* 최소 터치 타깃 */
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+
+  /* 플레이어 팔레트 — 어두운 곳에서도 서로 구분되는 채도 */
+  --p1: #ffb020;
+  --p2: #4ea8ff;
+  --p3: #2e9e6b;
+  --p4: #e4483c;
+  --p5: #c07cff;
+  --p6: #ff7ab8;
+  --p7: #38d4c8;
+  --p8: #ffd84d;
+  --p9: #7c8cff;
+  --p10: #9ad14b;
+  --p11: #ff8a3d;
+  --p12: #d0d6e8;
+}

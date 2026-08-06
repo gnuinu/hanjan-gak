@@ -1,0 +1,38 @@
+.home__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.home__logo {
+  font-size: clamp(56px, 18vw, 92px);
+  color: var(--amber);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 40px rgba(255, 176, 32, 0.25);
+}
+.home__sub {
+  font-size: 15px;
+}
+
+.home__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.chip {
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.chip--on {
+  color: var(--turf);
+  border-color: rgba(46, 158, 107, 0.4);
+}

@@ -1,0 +1,70 @@
+.tp__handoff {
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.tp__who {
+  font-size: 40px;
+}
+
+.tp__choose,
+.tp__reveal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 20px;
+}
+
+.tp__q {
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.tp__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tp__option {
+  min-height: 84px;
+  border-radius: var(--r-md);
+  background: var(--board);
+  border: 1px solid var(--line);
+  font-size: 19px;
+  font-weight: 700;
+}
+.tp__option:active {
+  background: var(--board-2);
+  border-color: var(--amber);
+}
+
+.tp__answers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tp__answer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: var(--board);
+  border: 1px solid var(--line);
+}
+.tp__answer.is-loser {
+  border-color: var(--alert);
+  color: var(--alert);
+}
+
+.tp__verdict {
+  text-align: center;
+  font-size: 30px;
+  color: var(--alert);
+}
+.tp__verdict.is-good {
+  color: var(--turf);
+}
