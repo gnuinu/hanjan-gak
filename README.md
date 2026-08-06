@@ -114,18 +114,20 @@ Cloudflare Pages는 대시보드에서 위 세 값을 넣는다.
 
 ### GitHub Pages
 
-`main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 결과물을 `gh-pages`
-브랜치에 직접 푸시한다. Settings → Pages → Source를 **Deploy from a branch**,
-브랜치 `gh-pages`, 폴더 `/ (root)`로 둔다.
+`main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 `actions/deploy-pages`
+로 올린다. Settings → Pages → Source를 **GitHub Actions**로 둬야 한다.
+
+소스가 "Deploy from a branch"로 되어 있으면 build 잡의 `configure-pages` 단계가
+바로 실패한다. 10분을 기다렸다가 타임아웃 나는 것보다 낫다.
 
 - 라우터는 `createHashRouter`. BrowserRouter는 새로고침 시 404가 난다.
-- `dist/.nojekyll`을 만들어 Jekyll 전처리를 끈다. 없으면 `_`로 시작하는 파일이 사라진다.
+- 배포가 한 번 실패한 커밋은 Re-run 해도 안 된다. 새 커밋을 밀어야 한다(아래 참고).
 
-**단, 이 저장소에서는 게시가 되지 않는다.** 아래 참고.
-
-### GitHub Pages 가 막혔던 기록
+### GitHub Pages 가 막혔던 기록 (2026-08-06)
 
 두 가지 방식으로 총 일곱 번 시도했고 전부 마지막 게시 단계에서 잘렸다.
+지금 워크플로는 첫 번째 방식으로 되돌려 둔 상태다 — 시간이 지나 백엔드가
+회복되면 그대로 동작한다.
 
 | 방식 | 결과 |
 |---|---|
