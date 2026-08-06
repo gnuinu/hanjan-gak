@@ -88,28 +88,61 @@ src/
 
 ## 배포
 
-GitHub Pages. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서
-결과물(`dist`)을 **`gh-pages` 브랜치에 직접 푸시**한다.
+빌드 결과(`dist`)는 어디에 올려도 도는 정적 파일이다. 서빙 위치에 따라 `base`만
+맞춰주면 된다.
 
-저장소 Settings → Pages → Source를 **Deploy from a branch**로, 브랜치는
-`gh-pages` / 폴더는 `/ (root)`로 설정해야 한다.
+```bash
+npm run build                 # base = /hanjankak/  (GitHub Pages 프로젝트 사이트)
+BASE_PATH=/ npm run build     # base = /            (도메인 루트에서 서빙)
+```
 
-- `vite.config.ts`의 `base`는 저장소명(`/hanjankak/`)과 반드시 일치해야 한다.
-- 라우터는 `createHashRouter`. BrowserRouter는 GH Pages에서 새로고침 시 404가 난다.
+`base`는 `vite.config.ts`에서 `BASE_PATH` 환경변수로 읽는다. PWA 매니페스트의
+`start_url`·`scope`도 같은 값을 따라간다.
+
+### Cloudflare Pages / Netlify / Vercel
+
+도메인 루트에서 서빙하므로 `BASE_PATH=/`가 필요하다.
+
+| 항목 | 값 |
+|---|---|
+| 빌드 명령 | `npm run build` |
+| 출력 디렉터리 | `dist` |
+| 환경 변수 | `BASE_PATH` = `/` |
+
+Netlify는 `netlify.toml`에 이미 들어 있어 저장소만 연결하면 된다.
+Cloudflare Pages는 대시보드에서 위 세 값을 넣는다.
+
+### GitHub Pages
+
+`main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 결과물을 `gh-pages`
+브랜치에 직접 푸시한다. Settings → Pages → Source를 **Deploy from a branch**,
+브랜치 `gh-pages`, 폴더 `/ (root)`로 둔다.
+
+- 라우터는 `createHashRouter`. BrowserRouter는 새로고침 시 404가 난다.
 - `dist/.nojekyll`을 만들어 Jekyll 전처리를 끈다. 없으면 `_`로 시작하는 파일이 사라진다.
 
-### actions/deploy-pages 를 안 쓰는 이유
+**단, 이 저장소에서는 게시가 되지 않는다.** 아래 참고.
 
-원래 공식 방식(`upload-pages-artifact` + `deploy-pages`)으로 짰는데, 이 저장소에선
-배포가 `deployment_queued` 상태에 붙잡힌 채 10분 타임아웃 나는 일이 다섯 번 연속
-반복됐다. 빌드·테스트·아티팩트 업로드는 매번 성공했고 막힌 건 deploy 잡뿐이었다.
-Pages 소스를 GitHub Actions로 바꾸고, 권한 선언을 고치고, 새 커밋으로 다시
-배포해도 같았다. 워크플로에서 손댈 수 있는 지점이 아니라 접었다.
+### GitHub Pages 가 막혔던 기록
 
-`gh-pages` 브랜치 방식은 그냥 `git push`라서 그 경로를 타지 않는다.
+두 가지 방식으로 총 일곱 번 시도했고 전부 마지막 게시 단계에서 잘렸다.
 
-디버깅하며 알게 된 것 두 가지를 남겨둔다:
+| 방식 | 결과 |
+|---|---|
+| `actions/deploy-pages` | `deployment_queued`에서 안 움직이고 10분 타임아웃 ×5 |
+| `gh-pages` 브랜치 + GitHub 내장 Pages 빌더 | `deployment_in_progress`까지 갔다가 10분 타임아웃 ×2 |
+
+빌드·테스트·아티팩트 업로드·`gh-pages` 푸시는 매번 성공했다. GitHub이 직접 돌리는
+`pages build and deployment` 워크플로의 build 잡도 5초 만에 통과한다. 막히는 건
+언제나 그 다음 "Deploy to GitHub Pages" 한 단계다. 계정 이메일 인증, 같은 계정의
+다른 저장소 Pages, 저장소 설정, GitHub 장애 여부는 전부 정상으로 확인했다.
+이 저장소에 한정된 백엔드 문제로 보고 접었다.
+
+디버깅하며 알아낸 것들:
 
 - **Pages 배포 ID는 커밋 SHA와 같다.** 배포가 한 번 취소(타임아웃 포함)된 커밋은
   Re-run 해도 5초 만에 `Deployment cancelled`로 끝난다. 재실행 말고 새 커밋을 밀어야 한다.
-- **`deploy-pages`의 `timeout` 최대값은 600000(10분)이다.** 더 크게 주면 경고만 내고 깎인다.
+- **`deploy-pages`의 `timeout` 최대값은 600000(10분)이다.** 더 크게 주면 경고만 내고
+  깎인다. GitHub 내장 Pages 워크플로의 타임아웃은 아예 바꿀 수 없다.
+- **`actions/configure-pages`는 이미 존재하는 사이트의 소스를 바꾸지 않는다.**
+  `enablement: true`를 줘도 출력 한 줄 없이 통과한다.
