@@ -95,5 +95,9 @@ Pages 소스는 워크플로의 `actions/configure-pages` 단계가 **GitHub Act
 소스가 "Deploy from a branch"로 남아 있으면 배포가 `deployment_queued`에서 멈춘 채
 타임아웃 난다 — 빌드가 성공했는데 deploy 잡만 실패한다면 대부분 이 경우다.
 
+**배포가 한 번 실패한 커밋은 Re-run 해도 안 된다.** Pages 배포 ID가 커밋 SHA와
+같아서, 취소된 배포 기록이 그 커밋에 계속 붙어 있다. 재실행하면 5초 만에
+`Deployment cancelled` 로 끝난다. 설정을 고쳤다면 Re-run 말고 **새 커밋을 푸시**할 것.
+
 - `vite.config.ts`의 `base`는 저장소명(`/hanjankak/`)과 반드시 일치해야 한다.
 - 라우터는 `createHashRouter`. BrowserRouter는 GH Pages에서 새로고침 시 404가 난다.

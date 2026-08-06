@@ -35,6 +35,12 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # timeout 은 액션이 허용하는 최대값이 10분이다. 그보다 크게 주면
+      # 경고를 내고 어차피 600000 으로 깎인다.
+      #
+      # 배포 ID = 커밋 SHA 라서, 한 번 취소(타임아웃 포함)된 커밋은
+      # 같은 커밋으로 재실행해도 "Deployment cancelled" 로 즉사한다.
+      # 그럴 땐 Re-run 대신 새 커밋을 올려야 한다.
       - id: deployment
         uses: actions/deploy-pages@v4
-        with: { timeout: 900000 }
+        with: { timeout: 600000 }
