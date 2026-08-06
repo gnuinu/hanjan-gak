@@ -88,16 +88,28 @@ src/
 
 ## 배포
 
-GitHub Pages. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 올린다.
+GitHub Pages. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서
+결과물(`dist`)을 **`gh-pages` 브랜치에 직접 푸시**한다.
 
-Pages 소스는 워크플로의 `actions/configure-pages` 단계가 **GitHub Actions**로 맞춘다.
-그래도 안 되면 저장소 Settings → Pages → Source를 직접 GitHub Actions로 바꾸면 된다.
-소스가 "Deploy from a branch"로 남아 있으면 배포가 `deployment_queued`에서 멈춘 채
-타임아웃 난다 — 빌드가 성공했는데 deploy 잡만 실패한다면 대부분 이 경우다.
-
-**배포가 한 번 실패한 커밋은 Re-run 해도 안 된다.** Pages 배포 ID가 커밋 SHA와
-같아서, 취소된 배포 기록이 그 커밋에 계속 붙어 있다. 재실행하면 5초 만에
-`Deployment cancelled` 로 끝난다. 설정을 고쳤다면 Re-run 말고 **새 커밋을 푸시**할 것.
+저장소 Settings → Pages → Source를 **Deploy from a branch**로, 브랜치는
+`gh-pages` / 폴더는 `/ (root)`로 설정해야 한다.
 
 - `vite.config.ts`의 `base`는 저장소명(`/hanjankak/`)과 반드시 일치해야 한다.
 - 라우터는 `createHashRouter`. BrowserRouter는 GH Pages에서 새로고침 시 404가 난다.
+- `dist/.nojekyll`을 만들어 Jekyll 전처리를 끈다. 없으면 `_`로 시작하는 파일이 사라진다.
+
+### actions/deploy-pages 를 안 쓰는 이유
+
+원래 공식 방식(`upload-pages-artifact` + `deploy-pages`)으로 짰는데, 이 저장소에선
+배포가 `deployment_queued` 상태에 붙잡힌 채 10분 타임아웃 나는 일이 다섯 번 연속
+반복됐다. 빌드·테스트·아티팩트 업로드는 매번 성공했고 막힌 건 deploy 잡뿐이었다.
+Pages 소스를 GitHub Actions로 바꾸고, 권한 선언을 고치고, 새 커밋으로 다시
+배포해도 같았다. 워크플로에서 손댈 수 있는 지점이 아니라 접었다.
+
+`gh-pages` 브랜치 방식은 그냥 `git push`라서 그 경로를 타지 않는다.
+
+디버깅하며 알게 된 것 두 가지를 남겨둔다:
+
+- **Pages 배포 ID는 커밋 SHA와 같다.** 배포가 한 번 취소(타임아웃 포함)된 커밋은
+  Re-run 해도 5초 만에 `Deployment cancelled`로 끝난다. 재실행 말고 새 커밋을 밀어야 한다.
+- **`deploy-pages`의 `timeout` 최대값은 600000(10분)이다.** 더 크게 주면 경고만 내고 깎인다.
