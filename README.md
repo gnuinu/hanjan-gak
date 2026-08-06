@@ -89,7 +89,11 @@ src/
 ## 배포
 
 GitHub Pages. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 올린다.
-저장소 Settings → Pages → Source를 **GitHub Actions**로 설정해야 한다.
+
+Pages 소스는 워크플로의 `actions/configure-pages` 단계가 **GitHub Actions**로 맞춘다.
+그래도 안 되면 저장소 Settings → Pages → Source를 직접 GitHub Actions로 바꾸면 된다.
+소스가 "Deploy from a branch"로 남아 있으면 배포가 `deployment_queued`에서 멈춘 채
+타임아웃 난다 — 빌드가 성공했는데 deploy 잡만 실패한다면 대부분 이 경우다.
 
 - `vite.config.ts`의 `base`는 저장소명(`/hanjankak/`)과 반드시 일치해야 한다.
 - 라우터는 `createHashRouter`. BrowserRouter는 GH Pages에서 새로고침 시 404가 난다.
