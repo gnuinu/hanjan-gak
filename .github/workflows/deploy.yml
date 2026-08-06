@@ -4,11 +4,18 @@ on:
   push: { branches: [main] }
   workflow_dispatch:
 
-permissions: { contents: read, pages: write, id-token: write }
+# 블록 스타일로 명시한다. deploy-pages 는 id-token 으로 받은 OIDC 토큰으로
+# 배포를 인가하는데, 이 권한이 실제로 안 붙으면 에러 없이 deployment_queued
+# 상태에 그대로 남아 타임아웃 난다.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # 진행 중인 배포는 끊지 않는다 (GitHub 권장값)
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -16,8 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Pages 소스를 GitHub Actions 로 맞춘다.
-      # 이게 없으면 저장소 설정이 "Deploy from a branch" 인 동안
-      # 배포가 deployment_queued 에서 안 넘어가고 타임아웃 난다.
+      # 저장소 설정이 "Deploy from a branch" 인 동안에는 배포가
+      # deployment_queued 에서 안 넘어가고 타임아웃 난다.
       - uses: actions/configure-pages@v5
         with: { enablement: true }
       - uses: actions/setup-node@v4
@@ -31,6 +38,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
