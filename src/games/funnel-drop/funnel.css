@@ -1,0 +1,67 @@
+.fn {
+  display: grid;
+  place-items: center;
+  padding: 8px 12px;
+  overflow: hidden;
+}
+
+.fn__svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: visible;
+}
+
+.fn__wall {
+  fill: none;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fn__exit {
+  stroke: var(--amber);
+  stroke-width: 0.8;
+  stroke-dasharray: 2 2;
+  opacity: 0.7;
+}
+
+.fn__peg {
+  fill: var(--board-2);
+  stroke: var(--line);
+  stroke-width: 0.4;
+  transition: fill 0.12s ease;
+}
+.fn__peg.is-hit {
+  fill: var(--turf);
+}
+
+.fn__ball-emoji {
+  font-size: 3.4px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.fn__ball.is-loser circle {
+  stroke: var(--alert);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 3px var(--alert));
+  /* SVG 의 transform 은 기본이 원점 기준이다. 이걸 안 잡아주면
+     scale 이 걸리는 순간 공이 화면 밖으로 날아간다. */
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fn-pop 0.5s ease-out;
+}
+
+@keyframes fn-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
