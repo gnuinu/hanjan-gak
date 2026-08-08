@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { GameProps } from '../../domain/game';
+import { assignKeys, seatOfCode } from '../../domain/keys';
 import { mulberry32 } from '../../domain/rng';
 import { sfx } from '../../ui/feedback';
 import './reaction.css';
@@ -33,6 +34,9 @@ function SplitReaction({ players, seed, onFinish }: GameProps) {
   const [loserId, setLoserId] = useState<string | null>(null);
   const [reason, setReason] = useState<'slow' | 'false-start'>('slow');
   const greenAt = useRef(0);
+  // 화면 분할은 손가락이 여러 개라야 되는데 PC 엔 마우스가 하나뿐이다.
+  // 자리마다 키를 하나씩 줘서 키보드로도 같이 할 수 있게 한다.
+  const keys = useMemo(() => assignKeys(players.length), [players.length]);
 
   const toGreen = useCallback(() => {
     greenAt.current = performance.now();
@@ -64,6 +68,24 @@ function SplitReaction({ players, seed, onFinish }: GameProps) {
     }
   }
 
+  // 최신 tap 을 리스너에 물려둔다 (리스너를 매번 다시 붙이지 않으려고)
+  const tapRef = useRef(tap);
+  useEffect(() => {
+    tapRef.current = tap;
+  });
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.repeat) return;
+      const seat = seatOfCode(keys, e.code);
+      if (seat < 0) return;
+      e.preventDefault();
+      tapRef.current(players[seat].id);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [keys, players]);
+
   return (
     <div className={`stage reaction reaction--split n${players.length} ${phase === 'go' ? 'is-go' : ''}`}>
       {players.map((p, i) => (
@@ -76,6 +98,7 @@ function SplitReaction({ players, seed, onFinish }: GameProps) {
           onPointerDown={() => tap(p.id)}
         >
           <span className="rx-zone__name">{p.name}</span>
+          <span className="rx-zone__key mono">{keys[i].toUpperCase()}</span>
           <span className="rx-zone__state mono">
             {loserId === p.id
               ? reason === 'false-start'

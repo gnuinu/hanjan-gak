@@ -53,7 +53,11 @@ export function GamePicker() {
               <span className="gamecard__emoji">{meta.emoji}</span>
               <span className="gamecard__title">{meta.title}</span>
               <span className="gamecard__tag">{meta.tagline}</span>
-              {meta.audience === 'couple' && <span className="gamecard__badge">커플</span>}
+              {meta.audience === 'couple' ? (
+                <span className="gamecard__badge">커플</span>
+              ) : meta.needsKeyboard ? (
+                <span className="gamecard__badge gamecard__badge--pc">⌨ PC</span>
+              ) : null}
             </button>
           ))}
         </div>

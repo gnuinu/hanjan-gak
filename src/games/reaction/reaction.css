@@ -48,6 +48,25 @@
   font-size: 26px;
   font-weight: 700;
 }
+
+/* 키캡은 키보드가 있을 법한 화면에서만. 폰에서는 그냥 화면을 누르면 된다 */
+.rx-zone__key {
+  display: none;
+}
+@media (any-pointer: fine) {
+  .rx-zone__key {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid currentColor;
+    border-bottom-width: 4px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    opacity: 0.55;
+  }
+}
 .rx-zone.is-tapped {
   filter: brightness(0.45);
 }

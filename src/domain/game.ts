@@ -10,6 +10,8 @@ export interface GameMeta {
   maxPlayers: number;
   durationSec: number; // 대략적 소요 시간 (랜덤 추천에 사용)
   needsMultiTouch?: boolean;
+  /** 한 키보드에 둘러앉아 하는 게임. 게임 목록에 PC 배지가 붙는다 */
+  needsKeyboard?: boolean;
   audience?: Audience; // 생략하면 'all'
 }
 

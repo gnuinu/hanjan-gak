@@ -16,7 +16,7 @@ npm run build    # 타입 체크 + 프로덕션 빌드
 npm run preview  # 빌드 결과 확인
 ```
 
-## 게임 8종
+## 게임 9종
 
 | 게임 | 판정 | 인원 |
 |---|---|---|
@@ -27,6 +27,7 @@ npm run preview  # 빌드 결과 확인
 | 🎯 룰렛 | 바늘이 가리킨 사람 | 2~12 |
 | 🧠 텔레파시 | 소수파 전원. 전원 일치면 벌칙 없음 | 2~12 |
 | 🫗 깔때기 | 출구를 제일 먼저 빠져나온 사람 | 2~12 |
+| 👀 눈치게임 | 동시에 누른 사람 전원 / 끝까지 못 부른 한 명 | 3~8 |
 | 💞 커플 밸런스 | 읽히면 답한 쪽, 못 읽으면 맞히는 쪽 | 2 (커플 전용) |
 
 반응 속도는 4명까지 화면 분할, 5명 이상이면 한 명씩 순차 플레이로 넘어간다.
@@ -41,6 +42,22 @@ npm run preview  # 빌드 결과 확인
   없애고, 그래도 한 공이 오래 멈춰 있으면 가운데로 밀어 흘려보낸다. 이게 없으면
   드물게 아무도 못 빠져나와 판이 통째로 멈춘다.
 
+## 폰 말고 PC 로 할 때
+
+노트북 한 대를 가운데 놓고 둘러앉는 자리도 있다. 폰을 돌리는 pass-and-play 와 달리
+이쪽은 **모두가 같은 화면을 동시에 본다** — 그래서 동시 입력을 받는 게임이 성립한다.
+
+자리마다 키를 하나씩 나눠주는 건 `domain/keys.ts` 가 맡는다. 홈 로우(A~L)에 인원수만큼
+고르게 퍼뜨려서, 둘이 하면 A 와 L 처럼 최대한 멀리 떨어진 키가 배정된다. 손이 부딪히면
+게임이 아니라 몸싸움이 된다.
+
+- **눈치게임** — 키보드 게임. 게임 목록에 `⌨ PC` 배지가 붙는다. 자리 카드를 마우스로
+  눌러도 되지만, 여럿이 동시에 누르려면 키보드가 필요하다.
+- **반응 속도(4명 이하 화면 분할)** — 원래 손가락 네 개가 필요해서 PC 에선 반쪽이었다.
+  이제 각 칸에 키가 배정되고, 마우스가 있는 화면에서만 키캡이 보인다.
+
+키 판정은 `e.key` 가 아니라 `e.code`(물리 키)로 한다. 한글 IME 가 켜져 있어도 그대로 먹는다.
+
 ## 게임 추가하기
 
 게임은 플러그인이다. `GameModule` 하나 만들고 레지스트리에 등록하면 끝이고,
@@ -51,7 +68,8 @@ npm run preview  # 빌드 결과 확인
 export const myGame: GameModule = {
   meta: { id: 'my-game', title: '내 게임', tagline: '한 줄 설명', emoji: '🎲',
           minPlayers: 2, maxPlayers: 12, durationSec: 20,
-          audience: 'couple' /* 커플 전용일 때만 */ },
+          audience: 'couple' /* 커플 전용일 때만 */,
+          needsKeyboard: true /* 키보드 게임일 때만 — 목록에 PC 배지 */ },
   Component: MyGame,
 };
 
@@ -82,7 +100,7 @@ export const myGame: GameModule = {
 ```
 src/
 ├─ domain/          순수 로직, React 의존 없음
-│  ├─ types.ts  game.ts  rng.ts  penalty.ts  stats.ts
+│  ├─ types.ts  game.ts  rng.ts  keys.ts  penalty.ts  stats.ts
 ├─ games/           게임 플러그인 (registry.ts 에 등록)
 ├─ shell/           앱 셸 — 홈/멤버/게임선택/결과/기록/설정
 ├─ store/           zustand (session: persist, round: 휘발)

@@ -47,6 +47,20 @@
   border-radius: 999px;
   padding: 3px 7px;
 }
+/* 키보드 게임은 강조색을 쓰지 않는다 — 자랑이 아니라 준비물 안내다 */
+.gamecard__badge--pc {
+  color: var(--muted);
+  background: var(--board-2);
+  border: 1px solid var(--line);
+}
+
+/* 가로가 넉넉하면 카드를 세 줄로 */
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+}
 
 .blocked {
   display: flex;
