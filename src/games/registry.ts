@@ -5,6 +5,7 @@ import { bombCard } from './bomb-card';
 import { reaction } from './reaction';
 import { spinWheel } from './spin-wheel';
 import { telepathy } from './telepathy';
+import { funnelDrop } from './funnel-drop';
 import { coupleBalance } from './couple-balance';
 import { nunchi } from './nunchi';
 
@@ -16,6 +17,7 @@ export const GAMES: GameModule[] = [
   reaction,
   spinWheel,
   telepathy,
+  funnelDrop,
   nunchi,
   coupleBalance,
 ];

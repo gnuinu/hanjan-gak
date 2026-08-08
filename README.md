@@ -1,4 +1,4 @@
-# 한잔각 (hanjankak)
+# 한잔각 (hanjan-gak)
 
 서버 없이 도는 오프라인 파티 게임 웹앱. 폰 한 대를 돌려가며 하는 pass-and-play 방식.
 인원수만 정하면 바로 시작하는 술자리 랜덤 벌칙 미니게임 모음이다.
@@ -16,7 +16,7 @@ npm run build    # 타입 체크 + 프로덕션 빌드
 npm run preview  # 빌드 결과 확인
 ```
 
-## 게임 8종
+## 게임 9종
 
 | 게임 | 판정 | 인원 |
 |---|---|---|
@@ -26,10 +26,21 @@ npm run preview  # 빌드 결과 확인
 | ⚡ 반응 속도 | 제일 느린 사람, 부정 출발은 즉시 패배 | 2~12 |
 | 🎯 룰렛 | 바늘이 가리킨 사람 | 2~12 |
 | 🧠 텔레파시 | 소수파 전원. 전원 일치면 벌칙 없음 | 2~12 |
+| 🫗 깔때기 | 출구를 제일 먼저 빠져나온 사람 | 2~12 |
 | 👀 눈치게임 | 동시에 누른 사람 전원 / 끝까지 못 부른 한 명 | 3~8 |
 | 💞 커플 밸런스 | 읽히면 답한 쪽, 못 읽으면 맞히는 쪽 | 2 (커플 전용) |
 
 반응 속도는 4명까지 화면 분할, 5명 이상이면 한 명씩 순차 플레이로 넘어간다.
+
+깔때기는 사람마다 공 하나씩 위에서 떨어뜨려 좁아지는 벽과 장애물을 통과시킨다.
+물리는 시드 RNG 기반이라 판정이 재현 가능하다. 두 가지를 특히 조심할 것:
+
+- **출발 슬롯을 사람에게 무작위로 배정한다.** 가운데 슬롯이 출구에 가까워
+  물리적으로 유리한데, 슬롯을 고정하면 6인 기준 걸릴 확률이 사람마다 3배 넘게
+  벌어진다. 셔플하면 균등해진다.
+- **끼임 방지 장치가 두 겹 있다.** 페그를 벽에서 충분히 떼어 공이 낄 주머니를
+  없애고, 그래도 한 공이 오래 멈춰 있으면 가운데로 밀어 흘려보낸다. 이게 없으면
+  드물게 아무도 못 빠져나와 판이 통째로 멈춘다.
 
 ## 폰 말고 PC 로 할 때
 
@@ -106,28 +117,66 @@ src/
 
 ## 배포
 
-GitHub Pages. `main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서
-결과물(`dist`)을 **`gh-pages` 브랜치에 직접 푸시**한다.
+빌드 결과(`dist`)는 어디에 올려도 도는 정적 파일이다. 서빙 위치에 따라 `base`만
+맞춰주면 된다.
 
-저장소 Settings → Pages → Source를 **Deploy from a branch**로, 브랜치는
-`gh-pages` / 폴더는 `/ (root)`로 설정해야 한다.
+```bash
+npm run build                 # base = /hanjan-gak/ (GitHub Pages 프로젝트 사이트)
+BASE_PATH=/ npm run build     # base = /            (도메인 루트에서 서빙)
+```
 
-- `vite.config.ts`의 `base`는 저장소명(`/hanjankak/`)과 반드시 일치해야 한다.
-- 라우터는 `createHashRouter`. BrowserRouter는 GH Pages에서 새로고침 시 404가 난다.
-- `dist/.nojekyll`을 만들어 Jekyll 전처리를 끈다. 없으면 `_`로 시작하는 파일이 사라진다.
+`base`는 `vite.config.ts`에서 `BASE_PATH` 환경변수로 읽고, 기본값은 저장소명과
+같은 `/hanjan-gak/` 이다. **저장소 이름을 바꾸면 이 기본값도 같이 바꿔야 한다** —
+안 그러면 자산 경로가 전부 어긋나 흰 화면이 뜬다. PWA 매니페스트의
+`start_url`·`scope`도 같은 값을 따라간다.
 
-### actions/deploy-pages 를 안 쓰는 이유
+### Cloudflare Pages / Netlify / Vercel
 
-원래 공식 방식(`upload-pages-artifact` + `deploy-pages`)으로 짰는데, 이 저장소에선
-배포가 `deployment_queued` 상태에 붙잡힌 채 10분 타임아웃 나는 일이 다섯 번 연속
-반복됐다. 빌드·테스트·아티팩트 업로드는 매번 성공했고 막힌 건 deploy 잡뿐이었다.
-Pages 소스를 GitHub Actions로 바꾸고, 권한 선언을 고치고, 새 커밋으로 다시
-배포해도 같았다. 워크플로에서 손댈 수 있는 지점이 아니라 접었다.
+도메인 루트에서 서빙하므로 `BASE_PATH=/`가 필요하다.
 
-`gh-pages` 브랜치 방식은 그냥 `git push`라서 그 경로를 타지 않는다.
+| 항목 | 값 |
+|---|---|
+| 빌드 명령 | `npm run build` |
+| 출력 디렉터리 | `dist` |
+| 환경 변수 | `BASE_PATH` = `/` |
 
-디버깅하며 알게 된 것 두 가지를 남겨둔다:
+Netlify는 `netlify.toml`에 이미 들어 있어 저장소만 연결하면 된다.
+Cloudflare Pages는 대시보드에서 위 세 값을 넣는다.
+
+### GitHub Pages
+
+`main`에 푸시하면 `.github/workflows/deploy.yml`이 빌드해서 `actions/deploy-pages`
+로 올린다. Settings → Pages → Source를 **GitHub Actions**로 둬야 한다.
+
+소스가 "Deploy from a branch"로 되어 있으면 build 잡의 `configure-pages` 단계가
+바로 실패한다. 10분을 기다렸다가 타임아웃 나는 것보다 낫다.
+
+- 라우터는 `createHashRouter`. BrowserRouter는 새로고침 시 404가 난다.
+- 배포가 한 번 실패한 커밋은 Re-run 해도 안 된다. 새 커밋을 밀어야 한다(아래 참고).
+
+### GitHub Pages 가 막혔던 기록 (2026-08-06)
+
+**하루 지나니 저절로 풀렸다. 지금은 정상 배포된다.** 아래는 그때의 기록이고,
+같은 증상이 다시 나오면 참고할 것 — 코드나 설정 문제가 아니었다.
+
+두 가지 방식으로 총 일곱 번 시도했고 전부 마지막 게시 단계에서 잘렸다.
+
+| 방식 | 결과 |
+|---|---|
+| `actions/deploy-pages` | `deployment_queued`에서 안 움직이고 10분 타임아웃 ×5 |
+| `gh-pages` 브랜치 + GitHub 내장 Pages 빌더 | `deployment_in_progress`까지 갔다가 10분 타임아웃 ×2 |
+
+빌드·테스트·아티팩트 업로드·`gh-pages` 푸시는 매번 성공했다. GitHub이 직접 돌리는
+`pages build and deployment` 워크플로의 build 잡도 5초 만에 통과한다. 막히는 건
+언제나 그 다음 "Deploy to GitHub Pages" 한 단계다. 계정 이메일 인증, 같은 계정의
+다른 저장소 Pages, 저장소 설정, GitHub 장애 여부는 전부 정상으로 확인했다.
+이 저장소에 한정된 일시적 문제였다.
+
+디버깅하며 알아낸 것들:
 
 - **Pages 배포 ID는 커밋 SHA와 같다.** 배포가 한 번 취소(타임아웃 포함)된 커밋은
   Re-run 해도 5초 만에 `Deployment cancelled`로 끝난다. 재실행 말고 새 커밋을 밀어야 한다.
-- **`deploy-pages`의 `timeout` 최대값은 600000(10분)이다.** 더 크게 주면 경고만 내고 깎인다.
+- **`deploy-pages`의 `timeout` 최대값은 600000(10분)이다.** 더 크게 주면 경고만 내고
+  깎인다. GitHub 내장 Pages 워크플로의 타임아웃은 아예 바꿀 수 없다.
+- **`actions/configure-pages`는 이미 존재하는 사이트의 소스를 바꾸지 않는다.**
+  `enablement: true`를 줘도 출력 한 줄 없이 통과한다.
