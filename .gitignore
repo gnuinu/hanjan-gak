@@ -6,3 +6,4 @@ dev-dist
 .vite
 .smoke*.mjs
 tsconfig.tsbuildinfo
+.check*.mjs
