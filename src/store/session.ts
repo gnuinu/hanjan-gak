@@ -152,6 +152,10 @@ export const useSession = create<SessionState>()(
       markIntroSeen: () => set({ seenIntro: true }),
     }),
     {
+      // 저장소 이름이 hanjan-gak 으로 바뀌었지만 이 키는 일부러 그대로 둔다.
+      // localStorage 는 경로가 아니라 오리진(gnuinu.github.io) 단위라, 키를 바꾸면
+      // 이미 쓰던 사람들의 멤버·설정·커스텀 벌칙이 통째로 사라진다.
+      // 이름을 맞추자고 남의 데이터를 버릴 이유가 없다.
       name: 'hanjankak/session',
       version: 1,
       // history 는 이번 자리 한정. 저장하지 않는다.

@@ -1,4 +1,4 @@
-# 한잔각 (hanjankak)
+# 한잔각 (hanjan-gak)
 
 서버 없이 도는 오프라인 파티 게임 웹앱. 폰 한 대를 돌려가며 하는 pass-and-play 방식.
 인원수만 정하면 바로 시작하는 술자리 랜덤 벌칙 미니게임 모음이다.
@@ -103,11 +103,13 @@ src/
 맞춰주면 된다.
 
 ```bash
-npm run build                 # base = /hanjankak/  (GitHub Pages 프로젝트 사이트)
+npm run build                 # base = /hanjan-gak/ (GitHub Pages 프로젝트 사이트)
 BASE_PATH=/ npm run build     # base = /            (도메인 루트에서 서빙)
 ```
 
-`base`는 `vite.config.ts`에서 `BASE_PATH` 환경변수로 읽는다. PWA 매니페스트의
+`base`는 `vite.config.ts`에서 `BASE_PATH` 환경변수로 읽고, 기본값은 저장소명과
+같은 `/hanjan-gak/` 이다. **저장소 이름을 바꾸면 이 기본값도 같이 바꿔야 한다** —
+안 그러면 자산 경로가 전부 어긋나 흰 화면이 뜬다. PWA 매니페스트의
 `start_url`·`scope`도 같은 값을 따라간다.
 
 ### Cloudflare Pages / Netlify / Vercel

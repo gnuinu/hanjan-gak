@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 // GitHub Pages 프로젝트 사이트는 /저장소명/ 아래에서 서빙되므로 base 가
 // 저장소명과 일치해야 한다. Cloudflare Pages·Netlify·Vercel 처럼 도메인
 // 루트에서 서빙하는 곳에 올릴 땐 BASE_PATH=/ 를 주면 된다.
-const base = process.env.BASE_PATH || '/hanjankak/';
+const base = process.env.BASE_PATH || '/hanjan-gak/';
 
 export default defineConfig({
   base,
