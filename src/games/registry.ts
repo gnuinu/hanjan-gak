@@ -6,6 +6,7 @@ import { reaction } from './reaction';
 import { spinWheel } from './spin-wheel';
 import { telepathy } from './telepathy';
 import { coupleBalance } from './couple-balance';
+import { nunchi } from './nunchi';
 
 // 게임 추가는 여기 한 줄이면 끝난다. 셸 코드는 건드리지 않는다.
 export const GAMES: GameModule[] = [
@@ -15,6 +16,7 @@ export const GAMES: GameModule[] = [
   reaction,
   spinWheel,
   telepathy,
+  nunchi,
   coupleBalance,
 ];
 
