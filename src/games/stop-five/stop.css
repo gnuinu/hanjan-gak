@@ -1,0 +1,149 @@
+.stop {
+  align-items: center;
+  text-align: center;
+  color: var(--paper);
+  padding: calc(var(--safe-t) + 12px) 20px calc(var(--safe-b) + 16px);
+}
+
+.stop__turn {
+  font-size: 14px;
+}
+
+.stop__center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.stop__who {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stop__cue {
+  font-size: 40px;
+}
+
+/* 흐르는 숫자. 자릿수가 바뀌어도 화면이 흔들리지 않게 폭을 고정한다 */
+.stop__clock {
+  font-size: 76px;
+  font-weight: 700;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 가려진 구간 — 눈에 띄되 아무 정보도 없어야 한다 */
+.stop__mask {
+  font-size: 76px;
+  width: 3ch;
+  height: 1.1em;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-md);
+  background: var(--board-2);
+  color: var(--muted);
+  border: 2px dashed var(--line);
+}
+
+.stop__target {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.stop__hint {
+  padding-bottom: 8px;
+}
+
+.stop--play.is-running {
+  background: var(--board);
+}
+.stop--play.is-blind {
+  background: var(--ink);
+}
+
+/* ─── 한 사람 결과 ─────────────────────────────────────────── */
+.stop__result {
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--amber);
+}
+.stop__verdict {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+}
+.stop__gap {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.stop--judged .stage__foot,
+.stop--done .stage__foot {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ─── 최종 순위 ────────────────────────────────────────────── */
+.stop--done {
+  justify-content: flex-start;
+}
+.stop__list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 460px;
+  overflow-y: auto;
+}
+.stop__row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: var(--board);
+  border: 1px solid var(--line);
+  text-align: left;
+}
+.stop__row .stop__who {
+  font-size: 16px;
+  font-weight: 500;
+}
+.stop__rank {
+  color: var(--muted);
+  font-size: 14px;
+}
+.stop__time {
+  font-size: 17px;
+  font-weight: 700;
+}
+.stop__row.is-loser {
+  border-color: var(--alert);
+  color: var(--alert);
+}
+.stop__row.is-loser .stop__who,
+.stop__row.is-loser .stop__rank,
+.stop__row.is-loser .stop__gap {
+  color: var(--alert);
+  font-weight: 700;
+}
+
+/* 사람이 많으면 줄을 좁혀서 한 화면에 다 들어오게 */
+@media (max-height: 720px) {
+  .stop__row {
+    padding: 9px 12px;
+  }
+  .stop__clock,
+  .stop__mask {
+    font-size: 60px;
+  }
+}
