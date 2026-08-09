@@ -13,7 +13,9 @@ export interface RaceResult {
 
 const MAX_TICKS = 900;
 const AVG_TICKS = 400; // 60틱/초 기준 약 6.7초
-const BASE = 1 / AVG_TICKS;
+/** 한 틱에 나아가는 기준 거리. UI 가 속도를 배속으로 환산할 때도 쓴다 */
+export const NOMINAL_STEP = 1 / AVG_TICKS;
+const BASE = NOMINAL_STEP;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
